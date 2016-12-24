@@ -46,3 +46,11 @@ Frontend:
 Backend:
 
 * Python
+
+## Player
+
+A player will be used to interpret user input directly, or a file with the fireworks display sequence.
+
+## Fireworks Display Sequence Generator
+
+This will be the algorithm that will automatically generate a fireworks display sequence based on a given input song.
