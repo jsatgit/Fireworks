@@ -10,7 +10,11 @@ The input of the core program is a sound file, the output is a fire works sequen
 
 ## How Do Sound Files Work
 
+Sound files are waves stored in the time domain. They encode frequency and amplitude.
+
 ## Parameters to Extract From an Audio File
+
+Frequency analysis will be employed to determine the relevant characteristics of the song at a given time of the song.
 
 
 ## How Do Fireworks Work
