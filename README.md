@@ -42,6 +42,7 @@ The embedding of the stars determines the shape of the explosion pattern.
 Frontend:
 
 * Web appplication using Javascript
+* `Matter.js` physics engine
 
 Backend:
 
