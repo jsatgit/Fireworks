@@ -35,7 +35,6 @@ var velocity = Vector.create(0, -17);
 Body.setVelocity(shell, velocity)
 
 var ground = Bodies.rectangle(400, 610, 810, 50, { isStatic: true });
-var stars = starsAt(400, 150, 50, 20, 0.3);
 
 // add all of the bodies to the world
 var bodies = [shell, ground]
@@ -44,7 +43,13 @@ World.add(engine.world, bodies);
 
 setTimeout(function() {
   World.remove(engine.world, shell);
+  var stars = starsAt(400, shell.position.y, 50, 20, 0.3);
   World.add(engine.world, stars);
+  setTimeout(function() {
+    for (var i = 0; i < stars.length; ++i) {
+      World.remove(engine.world, stars[i]);
+    }
+  }, 600);
 }, 600);
 
 // run the engine
