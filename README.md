@@ -55,3 +55,36 @@ A player will be used to interpret user input directly, or a file with the firew
 ## Fireworks Display Sequence Generator
 
 This will be the algorithm that will automatically generate a fireworks display sequence based on a given input song.
+
+# Fireworks Display Sequence Format
+
+Format will be in the following form
+```
+[Timestamp] TypeOfFirework1 xPosition Angle Speed, TypeOfFirework2 xPosition Angle Speed, etc...
+[Timestamp] ...
+etc...
+```
+## Timestamp
+
+This is a 7 digit value in milliseconds. Leading zeros are to be included and must have the square brackets. Having 7 digits gives us a maximum of 9,999,999 milliseconds, which translates to around 167 minutes. This should be enough time for a firework display. 
+
+### Examples
+
+* [0000100] is a valid timestamp
+* 0005000 is not a valid timestamp
+
+## TypeOfFirework
+
+This is the specific firework that is to be fired. A database of all existing fireworks will be made, each with a unique identifier. TypeOfFirework will give us details regarding the number of stars used, the colour, type of stars used etc. A TypeOfFirework can be made of TypeOfFirework (the stars are fireworks themselves).
+
+## xPosition
+
+We assume that all fireworks are shot at ground level. Thus, all we need to know is the x position that the fireworks will be shot at. This value will be in pixels.
+
+## Angle
+
+Angle is the degrees between the left horizontal and the initial path of the fireworks. For clarify, 0 degrees will shoot the fireworks towards the left with no y component. Anything less than 90 degrees will shoot the fireworks leftwards, anything greater than 90 degrees will shoot the fireworks rightwards. 180 degrees will shoot the firework toward the right with no y component. Value has to be between 0 and 180 degrees.
+
+## Speed
+
+Speed is the initial speed that the fireworks will be shot at. 
