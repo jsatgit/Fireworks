@@ -1,4 +1,3 @@
-// module aliases
 var Engine = Matter.Engine,
     Render = Matter.Render,
     World = Matter.World,
@@ -6,54 +5,123 @@ var Engine = Matter.Engine,
     Vector = Matter.Vector,
     Bodies = Matter.Bodies;
 
-// create an engine
-var engine = Engine.create();
+class Star {
+  constructor(world, angle, centre, radius, power, initialVelocity) {
+    const distanceFromCentre = 20;
+    const dx = distanceFromCentre * Math.cos(angle);
+    const dy = distanceFromCentre * Math.sin(angle);
+    const body = Bodies.circle(centre.x + dx, centre.y + dy, radius);
+    const burstVelocity = Vector.create(dx * power, dy * power);
+    Body.setVelocity(body, Vector.add(initialVelocity, burstVelocity));
 
-// create a renderer
-var render = Render.create({
-    element: document.body,
-    engine: engine
-});
+    this.body = body;
+    this.world = world;
+    this.fadeTime = 700;
 
-function starsAt(x, y, num, radius, power) {
-  var stars = []
-  for (var i = 0; i < num; ++i) {
-    var theta = (i / num) * 2 * Math.PI;
-    var dx = radius * Math.cos(theta);
-    var dy = radius * Math.sin(theta);
-    var star = Bodies.circle(x + dx, y + dy, 2);
-    var velocity = Vector.create(dx * power, dy * power);
-    Body.setVelocity(star, velocity);
-    stars.push(star);
+    this._destroy = this._destroy.bind(this);
   }
-  return stars;
+
+  _destroy() {
+    World.remove(this.world, this.body);
+  }
+
+  fade() {
+    setTimeout(this._destroy, this.fadeTime);
+  }
 }
 
-// create two boxes and a ground
-var shell = Bodies.circle(400, 590, 10);
-var velocity = Vector.create(0, -17);
-Body.setVelocity(shell, velocity)
 
-var ground = Bodies.rectangle(400, 610, 810, 50, { isStatic: true });
+class Shell {
+  constructor() {
+    this.body = this._createBody();
+    this.world = null;
+    this.explosionDelay = 600;
+    this.numStars = 50;
 
-// add all of the bodies to the world
-var bodies = [shell, ground]
+    this._explode = this._explode.bind(this);
+  }
 
-World.add(engine.world, bodies);
+  _createBody() {
+    const body = Bodies.circle(400, 530, 10);
+    var velocity = Vector.create(0, -17);
+    Body.setVelocity(body, velocity);
+    return body;
+  }
 
-setTimeout(function() {
-  World.remove(engine.world, shell);
-  var stars = starsAt(400, shell.position.y, 50, 20, 0.3);
-  World.add(engine.world, stars);
-  setTimeout(function() {
-    for (var i = 0; i < stars.length; ++i) {
-      World.remove(engine.world, stars[i]);
+  _createStars() {
+    var stars = []
+    for (var i = 0; i < this.numStars; ++i) {
+      var angle = (i / this.numStars) * 2 * Math.PI;
+      const star = new Star(
+        this.world,
+        angle,
+        this.body.position,
+        2,
+        0.3,
+        this.body.velocity
+      );
+      stars.push(star);
     }
-  }, 600);
-}, 600);
+    return stars;
+  }
 
-// run the engine
-Engine.run(engine);
+  _destroyShell() {
+    World.remove(this.world, this.body);
+  }
 
-// run the renderer
-Render.run(render);
+  _spawnStars() {
+    const stars = this._createStars();
+    stars.forEach(star => star.fade());
+    World.add(this.world, stars.map(star => star.body));
+  }
+
+  _explode() {
+    this._destroyShell();
+    this._spawnStars();
+  }
+
+  setWorld(world) {
+    this.world = world;
+  }
+
+  ignite() {
+    setTimeout(this._explode, this.explosionDelay);
+  }
+}
+
+class Fireworks {
+  constructor(shells) {
+    this.shells = shells;
+    this.engine = Engine.create();
+
+    this._attachGroundToWorld();
+    this._attachShellsToWorld();
+  }
+
+  _attachGroundToWorld() {
+    const ground = Bodies.rectangle(400, 550, 400, 10, { isStatic: true });
+    World.add(this.engine.world, [ground]);
+  }
+
+  _attachShellsToWorld() {
+    this.shells.forEach(shell => shell.setWorld(this.engine.world));
+    const bodies = this.shells.map(shell => shell.body);
+    World.add(this.engine.world, bodies);
+  }
+
+  start() {
+    this.shells.forEach(shell => shell.ignite());
+    Engine.run(this.engine);
+    const render = Render.create({
+        element: document.body,
+        engine: this.engine
+    });
+    Render.run(render);
+  }
+}
+
+const fireworks = new Fireworks([
+  new Shell()
+]);
+
+fireworks.start();
