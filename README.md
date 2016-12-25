@@ -58,24 +58,21 @@ This will be the algorithm that will automatically generate a fireworks display 
 
 # Fireworks Display Sequence Format
 
-Format will be in the following form
+Fireworks display sequence format will be in JSON. The general format is as follows:
 ```
-[Timestamp] TypeOfFirework1 xPosition Angle Speed, TypeOfFirework2 xPosition Angle Speed, etc...
-[Timestamp] ...
-etc...
+{display: [
+  {timestamp: 2342342342, shells: [{type: 1, xPosition: 234, angle: 90, speed: 120}]},
+  {timestamp: 12312123, shells: [{type: 1, xPosition: 232, angle: 45, speed: 50}, {type: 2, xPosition: 342, angle: 60, speed: 76}]}
+]}
 ```
+
 ## Timestamp
 
-This is a 7 digit value in milliseconds. Leading zeros are to be included and must have the square brackets. Having 7 digits gives us a maximum of 9,999,999 milliseconds, which translates to around 167 minutes. This should be enough time for a firework display. 
+This is an integer value that is measured in milliseconds.
 
-### Examples
+## Type
 
-* [0000100] is a valid timestamp
-* 0005000 is not a valid timestamp
-
-## TypeOfFirework
-
-This is the specific firework that is to be fired. A database of all existing fireworks will be made, each with a unique identifier. TypeOfFirework will give us details regarding the number of stars used, the colour, type of stars used etc. A TypeOfFirework can be made of TypeOfFirework (the stars are fireworks themselves).
+This is the type of firework that is to be fired. A generic set of fireworks will be available. Custome fireworks can also be made. The fireworks details will also be in JSON format and requires a unique identifier. The type gives us information regarding the number of stars used, the type of stars used, the colour etc. 
 
 ## xPosition
 
