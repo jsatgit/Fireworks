@@ -35,7 +35,7 @@ class Shell {
   constructor(options) {
     this.body = this._createBody(options.x);
     this.world = null;
-    this.explosionDelay = 600;
+    this.burstDelay = options.burstDelay;
     this.numStars = options.numStars;
 
     this._explode = this._explode.bind(this);
@@ -85,7 +85,7 @@ class Shell {
   }
 
   ignite() {
-    setTimeout(this._explode, this.explosionDelay);
+    setTimeout(this._explode, this.burstDelay);
   }
 }
 
@@ -140,7 +140,7 @@ const sequence = [
         "numStars": 10,
         "size": 10,
         "burstPower": 20,
-        "burstDelay": 300
+        "burstDelay": 600
       })
     ]
   },
@@ -152,14 +152,14 @@ const sequence = [
         "numStars": 10,
         "size": 10,
         "burstPower": 20,
-        "burstDelay": 300
+        "burstDelay": 500
       }),
       new Shell({
         "x": 450,
         "numStars": 10,
         "size": 10,
         "burstPower": 20,
-        "burstDelay": 300
+        "burstDelay": 700
       })
     ]
   }
