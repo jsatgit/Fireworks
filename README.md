@@ -59,39 +59,44 @@ This will be the algorithm that will automatically generate a fireworks display 
 # Fireworks Display Sequence Format
 
 Fireworks display sequence format will be in JSON. The general format is as follows:
-```
+
+```JSON
 {
   "shellDefinitions": [
-    {"type":1, "specs": {
-                          "numOfStars": 10,
-                          "typeOfStars": "circular",
-                          "colour": "blue",
-                          "size": 10,
-                          "burstPower": 20,
-                          "burstDelay": 300
-                        }
-    {"type":2, "specs": {
-                          "numOfStars": 50,
-                          "typeOfStars": "circular",
-                          "colour": "red",
-                          "size": 15,
-                          "burstPower": 40,
-                          "burstDelay": 500
-                        }
+    {
+      "type":1, 
+      "specs": {
+        "numOfStars": 10,
+        "typeOfStars": "circular",
+        "colour": "blue",
+        "size": 10,
+        "burstPower": 20,
+        "burstDelay": 300
+      }
+    {
+      "type":2,
+      "specs": {
+        "numOfStars": 50,
+        "typeOfStars": "circular",
+        "colour": "red",
+        "size": 15,
+        "burstPower": 40,
+        "burstDelay": 500
+      }
     ],
   "display": [
     {
       "timestamp": 2342342342, 
       "shells": [
-                  {"type": 1, "xPosition": 234, "angle": 90}
-                ]
+        {"type": 1, "xPosition": 234, "angle": 90}
+      ]
     },
     {
       "timestamp": 12312123,
       "shells": [
-                  {"type": 1, "xPosition": 232, "angle": 45},
-                  {"type": 2, "xPosition": 342, "angle": 60}
-                ]
+        {"type": 1, "xPosition": 232, "angle": 45},
+        {"type": 2, "xPosition": 342, "angle": 60}
+      ]
     }
   ]
 }
