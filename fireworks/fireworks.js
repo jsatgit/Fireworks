@@ -33,17 +33,22 @@ class Star {
 
 class Shell {
   constructor(options) {
-    this.body = this._createBody(options.x);
+    this.x = options.x;
     this.world = null;
     this.burstDelay = options.burstDelay;
+    this.size = options.size;
+    this.speed = this.size
+    this.burstPower = this.size * 0.017;
     this.numStars = options.numStars;
+
+    this.body = this._createBody();
 
     this._explode = this._explode.bind(this);
   }
 
-  _createBody(x) {
-    const body = Bodies.circle(x, 530, 10);
-    var velocity = Vector.create(0, -17);
+  _createBody() {
+    const body = Bodies.circle(this.x, 530, 10);
+    var velocity = Vector.create(0, -this.speed);
     Body.setVelocity(body, velocity);
     return body;
   }
@@ -57,7 +62,7 @@ class Shell {
         angle,
         this.body.position,
         2,
-        0.3,
+        this.burstPower,
         this.body.velocity
       );
       stars.push(star);
@@ -138,8 +143,7 @@ const sequence = [
       new Shell({
         "x": 400,
         "numStars": 10,
-        "size": 10,
-        "burstPower": 20,
+        "size": 17,
         "burstDelay": 600
       })
     ]
@@ -150,15 +154,13 @@ const sequence = [
       new Shell({
         "x": 350,
         "numStars": 10,
-        "size": 10,
-        "burstPower": 20,
+        "size": 20,
         "burstDelay": 500
       }),
       new Shell({
         "x": 450,
         "numStars": 10,
-        "size": 10,
-        "burstPower": 20,
+        "size": 13,
         "burstDelay": 700
       })
     ]
