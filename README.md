@@ -72,7 +72,7 @@ Fireworks display sequence format will be in JSON. The general format is as foll
         "size": 10,
         "burstPower": 20,
         "burstDelay": 300
-      }
+    },
     {
       "type":2,
       "specs": {
@@ -82,8 +82,8 @@ Fireworks display sequence format will be in JSON. The general format is as foll
         "size": 15,
         "burstPower": 40,
         "burstDelay": 500
-      }
-    ],
+    }
+  ],
   "display": [
     {
       "timestamp": 2342342342, 
