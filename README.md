@@ -58,24 +58,59 @@ This will be the algorithm that will automatically generate a fireworks display 
 
 # Fireworks Display Sequence Format
 
-Format will be in the following form
+Fireworks display sequence format will be in JSON. The general format is as follows:
+
+```JSON
+{
+  "shellDefinitions": [
+    {
+      "type": 1, 
+      "numOfStars": 10,
+      "typeOfStars": "circular",
+      "colour": "blue",
+      "sizeOfShell": 10,
+      "burstPower": 20,
+      "burstDelay": 300
+    },
+    {
+      "type": 2,
+      "numOfStars": 50,
+      "typeOfStars": "circular",
+      "colour": "red",
+      "sizeOfShell": 15,
+      "burstPower": 40,
+      "burstDelay": 500
+    }
+  ],
+  "sequence": [
+    {
+      "timestamp": 2342342342, 
+      "shells": [
+        {"type": 1, "xPosition": 234, "angle": 90}
+      ]
+    },
+    {
+      "timestamp": 12312123,
+      "shells": [
+        {"type": 1, "xPosition": 232, "angle": 45},
+        {"type": 2, "xPosition": 342, "angle": 60}
+      ]
+    }
+  ]
+}
 ```
-[Timestamp] TypeOfFirework1 xPosition Angle Speed, TypeOfFirework2 xPosition Angle Speed, etc...
-[Timestamp] ...
-etc...
-```
+
+## Shell Definition
+
+This is where shells are defined. Each shell must have a unique identifier. The specs of the shell will be listed in here. This inlcudes number of stars, type of stars used, colour, size of shell, burst power, burst delay. Burst delay is specified in milliseconds.
+
 ## Timestamp
 
-This is a 7 digit value in milliseconds. Leading zeros are to be included and must have the square brackets. Having 7 digits gives us a maximum of 9,999,999 milliseconds, which translates to around 167 minutes. This should be enough time for a firework display. 
+This is an integer value that is measured in milliseconds.
 
-### Examples
+## Type
 
-* [0000100] is a valid timestamp
-* 0005000 is not a valid timestamp
-
-## TypeOfFirework
-
-This is the specific firework that is to be fired. A database of all existing fireworks will be made, each with a unique identifier. TypeOfFirework will give us details regarding the number of stars used, the colour, type of stars used etc. A TypeOfFirework can be made of TypeOfFirework (the stars are fireworks themselves).
+This is the type of firework that is to be fired. A generic set of fireworks will be available. Custom fireworks can also be made. They are defined in the shell definition.
 
 ## xPosition
 
@@ -84,7 +119,3 @@ We assume that all fireworks are shot at ground level. Thus, all we need to know
 ## Angle
 
 Angle is the degrees between the left horizontal and the initial path of the fireworks. For clarify, 0 degrees will shoot the fireworks towards the left with no y component. Anything less than 90 degrees will shoot the fireworks leftwards, anything greater than 90 degrees will shoot the fireworks rightwards. 180 degrees will shoot the firework toward the right with no y component. Value has to be between 0 and 180 degrees.
-
-## Speed
-
-Speed is the initial speed that the fireworks will be shot at. 
