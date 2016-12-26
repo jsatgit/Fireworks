@@ -14,6 +14,9 @@ class Star {
       render: {
         strokeStyle: colour,
         fillStyle: colour
+      },
+      collisionFilter: {
+        category: -1
       }
     });
     const burstVelocity = Vector.create(dx * power, dy * power);
@@ -169,15 +172,15 @@ const sequence = [
     "shells": [
       new Shell({
         "x": 350,
-        "numStars": 10,
+        "numStars": 50,
         "size": 20,
         "colour": "blue",
         "burstDelay": 500
       }),
       new Shell({
         "x": 450,
-        "numStars": 10,
-        "size": 13,
+        "numStars": 50,
+        "size": 15,
         "colour": "green",
         "burstDelay": 700
       })
