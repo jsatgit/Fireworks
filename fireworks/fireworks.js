@@ -6,11 +6,16 @@ var Engine = Matter.Engine,
     Bodies = Matter.Bodies;
 
 class Star {
-  constructor(world, angle, centre, radius, power, initialVelocity) {
+  constructor(world, angle, centre, radius, power, initialVelocity, colour) {
     const distanceFromCentre = 20;
     const dx = distanceFromCentre * Math.cos(angle);
     const dy = distanceFromCentre * Math.sin(angle);
-    const body = Bodies.circle(centre.x + dx, centre.y + dy, radius);
+    const body = Bodies.circle(centre.x + dx, centre.y + dy, radius, {
+      render: {
+        strokeStyle: colour,
+        fillStyle: colour
+      }
+    });
     const burstVelocity = Vector.create(dx * power, dy * power);
     Body.setVelocity(body, Vector.add(initialVelocity, burstVelocity));
 
@@ -40,6 +45,7 @@ class Shell {
     this.speed = this.size
     this.burstPower = this.size * 0.017;
     this.numStars = options.numStars;
+    this.colour = options.colour;
 
     this.body = this._createBody();
 
@@ -47,7 +53,12 @@ class Shell {
   }
 
   _createBody() {
-    const body = Bodies.circle(this.x, 530, 10);
+    const body = Bodies.circle(this.x, 530, 10, {
+      render: {
+        strokeStyle: this.colour,
+        fillStyle: this.colour
+      }
+    });
     var velocity = Vector.create(0, -this.speed);
     Body.setVelocity(body, velocity);
     return body;
@@ -63,7 +74,8 @@ class Shell {
         this.body.position,
         2,
         this.burstPower,
-        this.body.velocity
+        this.body.velocity,
+        this.colour
       );
       stars.push(star);
     }
@@ -130,7 +142,10 @@ class Fireworks {
     Engine.run(this.engine);
     const render = Render.create({
         element: document.body,
-        engine: this.engine
+        engine: this.engine,
+        options: {
+          wireframes: false
+        }
     });
     Render.run(render);
   }
@@ -144,6 +159,7 @@ const sequence = [
         "x": 400,
         "numStars": 10,
         "size": 17,
+        "colour": "red",
         "burstDelay": 600
       })
     ]
@@ -155,12 +171,14 @@ const sequence = [
         "x": 350,
         "numStars": 10,
         "size": 20,
+        "colour": "blue",
         "burstDelay": 500
       }),
       new Shell({
         "x": 450,
         "numStars": 10,
         "size": 13,
+        "colour": "green",
         "burstDelay": 700
       })
     ]
