@@ -64,27 +64,25 @@ Fireworks display sequence format will be in JSON. The general format is as foll
 {
   "shellDefinitions": [
     {
-      "type":1, 
-      "specs": {
-        "numOfStars": 10,
-        "typeOfStars": "circular",
-        "colour": "blue",
-        "size": 10,
-        "burstPower": 20,
-        "burstDelay": 300
+      "type": 1, 
+      "numOfStars": 10,
+      "typeOfStars": "circular",
+      "colour": "blue",
+      "sizeOfShell": 10,
+      "burstPower": 20,
+      "burstDelay": 300
     },
     {
-      "type":2,
-      "specs": {
-        "numOfStars": 50,
-        "typeOfStars": "circular",
-        "colour": "red",
-        "size": 15,
-        "burstPower": 40,
-        "burstDelay": 500
+      "type": 2,
+      "numOfStars": 50,
+      "typeOfStars": "circular",
+      "colour": "red",
+      "sizeOfShell": 15,
+      "burstPower": 40,
+      "burstDelay": 500
     }
   ],
-  "display": [
+  "sequence": [
     {
       "timestamp": 2342342342, 
       "shells": [
