@@ -36,7 +36,7 @@ class Shell {
     this.body = this._createBody(options.x);
     this.world = null;
     this.explosionDelay = 600;
-    this.numStars = 50;
+    this.numStars = options.numStars;
 
     this._explode = this._explode.bind(this);
   }
