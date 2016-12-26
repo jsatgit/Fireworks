@@ -32,8 +32,8 @@ class Star {
 
 
 class Shell {
-  constructor() {
-    this.body = this._createBody();
+  constructor(options) {
+    this.body = this._createBody(options.x);
     this.world = null;
     this.explosionDelay = 600;
     this.numStars = 50;
@@ -41,8 +41,8 @@ class Shell {
     this._explode = this._explode.bind(this);
   }
 
-  _createBody() {
-    const body = Bodies.circle(400, 530, 10);
+  _createBody(x) {
+    const body = Bodies.circle(x, 530, 10);
     var velocity = Vector.create(0, -17);
     Body.setVelocity(body, velocity);
     return body;
@@ -90,12 +90,12 @@ class Shell {
 }
 
 class Fireworks {
-  constructor(shells) {
-    this.shells = shells;
+  constructor(sequence) {
+    this.sequence = sequence;
     this.engine = Engine.create();
 
     this._attachGroundToWorld();
-    this._attachShellsToWorld();
+    this._fireShells = this._fireShells.bind(this);
   }
 
   _attachGroundToWorld() {
@@ -103,14 +103,25 @@ class Fireworks {
     World.add(this.engine.world, [ground]);
   }
 
-  _attachShellsToWorld() {
-    this.shells.forEach(shell => shell.setWorld(this.engine.world));
-    const bodies = this.shells.map(shell => shell.body);
+  _attachShellsToWorld(shells) {
+    shells.forEach(shell => shell.setWorld(this.engine.world));
+    const bodies = shells.map(shell => shell.body);
     World.add(this.engine.world, bodies);
   }
 
+  _fireShells(shells) {
+    this._attachShellsToWorld(shells)
+    shells.forEach(shell => shell.ignite());
+  }
+
   start() {
-    this.shells.forEach(shell => shell.ignite());
+    this.sequence.forEach(period => {
+      if (period.timestamp == 0) {
+        this._fireShells(period.shells)
+      } else {
+        setTimeout(() => this._fireShells(period.shells), period.timestamp);
+      }
+    })
     Engine.run(this.engine);
     const render = Render.create({
         element: document.body,
@@ -120,8 +131,39 @@ class Fireworks {
   }
 }
 
-const fireworks = new Fireworks([
-  new Shell()
-]);
+const sequence = [
+  {
+    "timestamp": 0, 
+    "shells": [
+      new Shell({
+        "x": 400,
+        "numStars": 10,
+        "size": 10,
+        "burstPower": 20,
+        "burstDelay": 300
+      })
+    ]
+  },
+  {
+    "timestamp": 1000,
+    "shells": [
+      new Shell({
+        "x": 350,
+        "numStars": 10,
+        "size": 10,
+        "burstPower": 20,
+        "burstDelay": 300
+      }),
+      new Shell({
+        "x": 450,
+        "numStars": 10,
+        "size": 10,
+        "burstPower": 20,
+        "burstDelay": 300
+      })
+    ]
+  }
+]
+const fireworks = new Fireworks(sequence);
 
 fireworks.start();
