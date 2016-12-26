@@ -60,11 +60,46 @@ This will be the algorithm that will automatically generate a fireworks display 
 
 Fireworks display sequence format will be in JSON. The general format is as follows:
 ```
-{display: [
-  {timestamp: 2342342342, shells: [{type: 1, xPosition: 234, angle: 90, speed: 120}]},
-  {timestamp: 12312123, shells: [{type: 1, xPosition: 232, angle: 45, speed: 50}, {type: 2, xPosition: 342, angle: 60, speed: 76}]}
-]}
+{
+  "shellDefinitions": [
+    {"type":1, "specs": {
+                          "numOfStars": 10,
+                          "typeOfStars": "circular",
+                          "colour": "blue",
+                          "size": 10,
+                          "burstPower": 20,
+                          "burstDelay": 300
+                        }
+    {"type":2, "specs": {
+                          "numOfStars": 50,
+                          "typeOfStars": "circular",
+                          "colour": "red",
+                          "size": 15,
+                          "burstPower": 40,
+                          "burstDelay": 500
+                        }
+    ],
+  "display": [
+    {
+      "timestamp": 2342342342, 
+      "shells": [
+                  {"type": 1, "xPosition": 234, "angle": 90}
+                ]
+    },
+    {
+      "timestamp": 12312123,
+      "shells": [
+                  {"type": 1, "xPosition": 232, "angle": 45},
+                  {"type": 2, "xPosition": 342, "angle": 60}
+                ]
+    }
+  ]
+}
 ```
+
+## Shell Definition
+
+This is where shells are defined. Each shell must have a unique identifier. The specs of the shell will be listed in here. This inlcudes number of stars, type of stars used, colour, size of shell, burst power, burst delay. Burst delay is specified in milliseconds.
 
 ## Timestamp
 
@@ -72,7 +107,7 @@ This is an integer value that is measured in milliseconds.
 
 ## Type
 
-This is the type of firework that is to be fired. A generic set of fireworks will be available. Custome fireworks can also be made. The fireworks details will also be in JSON format and requires a unique identifier. The type gives us information regarding the number of stars used, the type of stars used, the colour etc. 
+This is the type of firework that is to be fired. A generic set of fireworks will be available. Custom fireworks can also be made. They are defined in the shell definition.
 
 ## xPosition
 
@@ -81,7 +116,3 @@ We assume that all fireworks are shot at ground level. Thus, all we need to know
 ## Angle
 
 Angle is the degrees between the left horizontal and the initial path of the fireworks. For clarify, 0 degrees will shoot the fireworks towards the left with no y component. Anything less than 90 degrees will shoot the fireworks leftwards, anything greater than 90 degrees will shoot the fireworks rightwards. 180 degrees will shoot the firework toward the right with no y component. Value has to be between 0 and 180 degrees.
-
-## Speed
-
-Speed is the initial speed that the fireworks will be shot at. 
