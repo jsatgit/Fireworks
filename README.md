@@ -4,6 +4,24 @@
 
 Fireworks is an app that creates firework visualizations based on audio files.
 
+# Dev Setup
+
+## Dependencies
+
+npm
+
+## First Time Setup
+
+In the project root directory:
+
+`npm install`
+
+## To Build
+
+In the project root directory:
+
+`npm start`
+
 # Research
 
 The input of the core program is a sound file, the output is a fire works sequence file 
