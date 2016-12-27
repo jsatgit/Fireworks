@@ -8,7 +8,7 @@ Fireworks is an app that creates firework visualizations based on audio files.
 
 ## Dependencies
 
-npm
+[npm](http://blog.npmjs.org/post/85484771375/how-to-install-npm)
 
 ## First Time Setup
 
