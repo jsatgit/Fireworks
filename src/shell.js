@@ -14,7 +14,7 @@ class Shell {
     this.burstDelay = options.burstDelay;
 
     this._body = null;
-    this._stars = null;
+    this._stars = this._createStars();
   }
 
   _getBurstPower() {
@@ -26,9 +26,7 @@ class Shell {
       const body = this._getBody();
       return new Star(
         angle,
-        body.position,
         this._getBurstPower(),
-        body.velocity,
         this.colour
       );
   }
@@ -42,19 +40,15 @@ class Shell {
     return stars;
   }
 
-  _getStars() {
-    if (!this._stars) {
-      this._stars = this._createStars();
-    }
-    return this._stars;
-  }
-
   _destroyShell() {
     getEnv().remove(this._getBody());
   }
 
   _spawnStars() {
-    this._getStars().forEach(star => star.spawn());
+    const body = this._getBody();
+    this._stars.forEach(
+      star => star.spawn(body.position, body.velocity)
+    );
   }
 
   _burst() {

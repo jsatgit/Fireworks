@@ -7,16 +7,14 @@ const Body = Matter.Body;
 const Vector = Matter.Vector;
 
 class Star {
-  constructor(angle, centre, power, initialVelocity, colour, radius=2) {
+  constructor(angle, power, colour, radius=2) {
     this.angle = angle;
-    this.centre = centre;
     this.power = power;
-    this.initialVelocity = initialVelocity;
     this.colour = colour;
     this.radius = radius;
 
-    this._displacementFromCentre = null;
-    this._body = null;
+    this._displacementFromCentre = this._getDisplacementFromCentre();
+    this._body = this._createBody();
     this._lifetime = 700;
   }
 
@@ -34,61 +32,48 @@ class Star {
   }
 
   _getDisplacementFromCentre(distanceFromCentre=20) {
-    if (!this._displacementFromCentre) {
-      this._displacementFromCentre = {
-        x: distanceFromCentre * Math.cos(this.angle),
-        y: distanceFromCentre * Math.sin(this.angle)
-      };
-    }
-    return this._displacementFromCentre;
-  }
-
-  _getBurstVelocity() {
-    const direction = this._getDisplacementFromCentre();
-    return Vector.create(
-      this.initialVelocity.x + direction.x * this.power,
-      this.initialVelocity.y + direction.y * this.power
-    );
-  }
-
-  _getPosition() {
-    const displacement = this._getDisplacementFromCentre();
     return {
-      x: this.centre.x + displacement.x,
-      y: this.centre.y + displacement.y
+      x: distanceFromCentre * Math.cos(this.angle),
+      y: distanceFromCentre * Math.sin(this.angle)
     };
   }
 
-  _createBody() {
-    const position = this._getPosition();
-    const body = Bodies.circle(
-      position.x,
-      position.y,
-      this.radius,
-      {
-        render: this._getRenderOptions(),
-        collisionFilter: this._getCollisionFilter(),
-      }
+  _setPosition(centre) {
+    const displacement = this._displacementFromCentre;
+    const position = Vector.create(
+      centre.x + displacement.x,
+      centre.y + displacement.y
     );
-    Body.setVelocity(body, this._getBurstVelocity());
-    return body;
+    Body.setPosition(this._body, position);
+  }
+
+  _setBurstVelocity(initialVelocity) {
+    const direction = this._displacementFromCentre;
+    const burstVelocity = Vector.create(
+      initialVelocity.x + direction.x * this.power,
+      initialVelocity.y + direction.y * this.power
+    );
+    Body.setVelocity(this._body, burstVelocity);
+  }
+
+  _createBody() {
+    const options = {
+      render: this._getRenderOptions(),
+      collisionFilter: this._getCollisionFilter(),
+    };
+    return Bodies.circle(0, 0, this.radius, options);
   }
 
   _destroy() {
-    getEnv().remove(this.getBody());
+    getEnv().remove(this._body);
   }
 
   // Public methods
 
-  getBody() {
-    if (!this._body) {
-      this._body = this._createBody();
-    }
-    return this._body;
-  }
-
-  spawn() {
-    getEnv().add(this.getBody());
+  spawn(centre, initialVelocity) {
+    this._setPosition(centre);
+    this._setBurstVelocity(initialVelocity);
+    getEnv().add(this._body);
     setTimeout(this._destroy.bind(this), this._lifetime);
   }
 }
