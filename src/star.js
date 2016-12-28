@@ -27,7 +27,7 @@ class Star {
 
   _getCollisionFilter() {
     return {
-      category: DO_NOT_COLLIDE
+      group: DO_NOT_COLLIDE
     };
   }
 
