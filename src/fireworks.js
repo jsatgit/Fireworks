@@ -1,4 +1,3 @@
-import Shell from './shell';
 import getEnv from './env';
 
 const Bodies = Matter.Bodies;
@@ -41,40 +40,4 @@ class Fireworks {
   }
 }
 
-const sequence = [
-  {
-    "timestamp": 0,
-    "shells": [
-      new Shell({
-        "xPosition": 400,
-        "numStars": 10,
-        "size": 17,
-        "colour": "red",
-        "burstDelay": 600
-      })
-    ]
-  },
-  {
-    "timestamp": 1000,
-    "shells": [
-      new Shell({
-        "xPosition": 350,
-        "numStars": 50,
-        "size": 20,
-        "colour": "blue",
-        "burstDelay": 500
-      }),
-      new Shell({
-        "xPosition": 450,
-        "numStars": 50,
-        "size": 15,
-        "colour": "green",
-        "burstDelay": 700
-      })
-    ]
-  }
-];
-
-const fireworks = new Fireworks(sequence);
-fireworks.setup();
-fireworks.start();
+export default Fireworks;
